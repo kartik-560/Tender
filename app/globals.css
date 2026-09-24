@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #f8fafc;
+    --foreground: #0f172a;
+  }
+
+  body {
+    @apply bg-[#f8fafc] text-slate-900 antialiased selection:bg-blue-100 selection:text-blue-900;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    min-height: 100vh;
+  }
+}
+
+/* Institutional Portal Layout Utilities */
+.portal-card {
+  @apply bg-white border border-slate-200 rounded-md shadow-xs;
+}
+
+.portal-panel {
+  @apply bg-white border border-slate-200 rounded-md;
+}
+
+.portal-table {
+  @apply w-full text-left text-xs border-collapse;
+}
+
+.portal-table thead th {
+  @apply bg-slate-50 border-b border-slate-200 px-3.5 py-2.5 text-[11px] font-semibold text-slate-600 uppercase tracking-wider select-none;
+}
+
+.portal-table tbody td {
+  @apply px-3.5 py-2.5 border-b border-slate-100 text-slate-700 align-middle;
+}
+
+.portal-table tbody tr:hover {
+  @apply bg-slate-50/80;
+}
+
+/* Clean Form Controls */
+.portal-input {
+  @apply bg-white border border-slate-300 rounded-md px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 transition-colors;
+}
+
+/* Clean, standard scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
