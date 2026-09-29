@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { UploadCloud, FileText, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { UploadCloud, FileText, ArrowRight, ShieldCheck, CheckCircle2, AlertTriangle } from 'lucide-react';
 import Button from '../../components/Button';
 import useTenderStore from '../../store/useTenderStore';
 import { useToast } from '../../providers/ToastProvider';
@@ -148,10 +148,19 @@ export function Step1Upload() {
         </div>
       )}
 
-      {/* Error Alert */}
+      {/* Document Validation Alert */}
       {uploadError && (
-        <div className="p-3 rounded bg-red-50 border border-red-200 text-xs text-red-800 font-medium">
-          Error: {uploadError}
+        <div className="p-4 rounded-lg bg-red-50/90 border border-red-200 text-xs text-red-900 flex items-start gap-3 shadow-xs">
+          <div className="p-1 rounded bg-red-100 text-red-700 shrink-0 mt-0.5">
+            <AlertTriangle className="w-4 h-4" />
+          </div>
+          <div className="space-y-1">
+            <p className="font-semibold text-red-900">Document Ingestion Rejected</p>
+            <p className="text-red-700 leading-relaxed">{uploadError}</p>
+            <p className="text-[11px] text-red-600 font-mono pt-1">
+              Authorized Formats: Official government/enterprise RFPs, tenders, RFQs, or procurement solicitation packages.
+            </p>
+          </div>
         </div>
       )}
 

@@ -76,6 +76,20 @@ export const api = {
     return data;
   },
 
+  async registerTender(payload) {
+    const res = await fetch(`${BASE_URL}/tenders/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...getAuthHeader(),
+      },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to register tender in database');
+    return data;
+  },
+
   async deleteTender(id) {
     const res = await fetch(`${BASE_URL}/tenders/${id}`, {
       method: 'DELETE',

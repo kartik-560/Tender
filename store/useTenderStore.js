@@ -47,8 +47,7 @@ export const useTenderStore = create((set, get) => ({
         currentStep: 2, // Advance to step 2: List Documents
       });
 
-      // Refresh tenders list in background
-      get().fetchTenders();
+      // Do NOT fetch tenders here: tender is only officially registered upon Phase 5 confirmation
       return response.data;
     } catch (error) {
       set({
@@ -58,6 +57,32 @@ export const useTenderStore = create((set, get) => ({
       });
       throw error;
     }
+  },
+
+  confirmAndRegisterTender: async () => {
+    const { extractedTender } = get();
+    if (!extractedTender || !extractedTender.tender) {
+      throw new Error('No tender dossier available for registration.');
+    }
+
+    const payload = {
+      tender: extractedTender.tender,
+      rawAnalysis: extractedTender.rawAnalysis,
+    };
+
+    const response = await api.registerTender(payload);
+
+    set({
+      extractedTender: {
+        ...extractedTender,
+        tender: response.data,
+        isRegistered: true,
+      }
+    });
+
+    // Officially refresh active procurement registry now that Phase 5 is completed
+    get().fetchTenders();
+    return response.data;
   },
 
   resetUploadFlow: () => set({

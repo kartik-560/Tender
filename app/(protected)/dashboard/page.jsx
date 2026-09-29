@@ -54,6 +54,10 @@ export default function DashboardPage() {
     loadData();
   }, []);
 
+  if (isLoading) {
+    return <DashboardSkeleton />;
+  }
+
   // Real KPIs derived dynamically from backend/database
   const kpis = analytics?.kpi || {
     activeTenders: tenders.filter(t => t.status === 'Active' || t.status === 'In Review').length,
@@ -347,6 +351,162 @@ export default function DashboardPage() {
                   </td>
                 </tr>
               )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Dashboard-specific skeleton loader.
+ * Recreates the exact layout of the Executive Dashboard:
+ * - Header & breadcrumbs
+ * - 4 dynamic KPI StatCards
+ * - Monthly volume chart & Win/Loss donut chart
+ * - Operational tenders registry table with 6 columns & 5 rows
+ */
+function DashboardSkeleton() {
+  return (
+    <div className="space-y-6" aria-busy="true" aria-label="Loading dashboard data">
+      {/* Official Header & Breadcrumb Skeleton */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+        <div className="space-y-1.5">
+          <div className="h-3 w-48 bg-slate-200 rounded animate-pulse" />
+          <div className="h-6 w-96 max-w-full bg-slate-300 rounded animate-pulse" />
+          <div className="h-3.5 w-120 max-w-full bg-slate-100 rounded animate-pulse" />
+        </div>
+
+        <div className="h-8 w-44 bg-slate-200 rounded animate-pulse shrink-0" />
+      </div>
+
+      {/* KPI Row (4 Stat Cards Skeleton) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { label: 'Active Tenders', subtitle: 'Active procurement solicitations' },
+          { label: 'Upcoming Deadlines', subtitle: 'Identified cutoff milestones' },
+          { label: 'Win Rate', subtitle: 'Evaluated tender proposals' },
+          { label: 'Avg Risk Index', subtitle: 'Scale 0.0 - 5.0 (FAR standards)' }
+        ].map((card, i) => (
+          <div key={i} className="portal-card p-4 flex flex-col justify-between h-28 space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="h-3 w-24 bg-slate-200 rounded animate-pulse" />
+              <div className="w-7 h-7 rounded bg-slate-100 flex items-center justify-center animate-pulse" />
+            </div>
+            <div className="h-7 w-20 bg-slate-300 rounded animate-pulse" />
+            <div className="h-2.5 w-36 bg-slate-100 rounded animate-pulse" />
+          </div>
+        ))}
+      </div>
+
+      {/* Analytical Charts Grid (Monthly Area Chart + Win/Loss Donut) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        {/* Monthly Tender Analysis Skeleton */}
+        <div className="lg:col-span-2 portal-card p-4 flex flex-col justify-between">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+            <div className="space-y-1">
+              <div className="h-3.5 w-36 bg-slate-200 rounded animate-pulse" />
+              <div className="h-2.5 w-56 bg-slate-100 rounded animate-pulse" />
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="h-3 w-16 bg-slate-100 rounded animate-pulse" />
+              <div className="h-3 w-14 bg-slate-100 rounded animate-pulse" />
+            </div>
+          </div>
+
+          <div className="h-64 w-full pt-4 flex flex-col justify-end space-y-3">
+            {/* Simulated Chart Grid Lines & Wave Area */}
+            <div className="w-full flex-1 flex flex-col justify-between py-2 border-b border-l border-slate-200">
+              <div className="w-full border-b border-dashed border-slate-100 h-0" />
+              <div className="w-full border-b border-dashed border-slate-100 h-0" />
+              <div className="w-full border-b border-dashed border-slate-100 h-0" />
+              <div className="w-full h-24 bg-gradient-to-t from-slate-100/70 to-transparent rounded-t animate-pulse" />
+            </div>
+            <div className="flex justify-between px-2 pt-1">
+              {[1, 2, 3, 4, 5, 6].map((m) => (
+                <div key={m} className="h-2 w-8 bg-slate-100 rounded animate-pulse" />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Win vs Loss Ratio Donut Chart Skeleton */}
+        <div className="portal-card p-4 flex flex-col justify-between">
+          <div className="pb-3 border-b border-slate-200 space-y-1">
+            <div className="h-3.5 w-32 bg-slate-200 rounded animate-pulse" />
+            <div className="h-2.5 w-44 bg-slate-100 rounded animate-pulse" />
+          </div>
+
+          <div className="h-52 w-full relative flex items-center justify-center my-1">
+            <div className="w-36 h-36 rounded-full border-[14px] border-slate-200 animate-pulse flex items-center justify-center">
+              <div className="space-y-1 text-center">
+                <div className="h-5 w-10 bg-slate-300 rounded animate-pulse mx-auto" />
+                <div className="h-2 w-12 bg-slate-100 rounded animate-pulse mx-auto" />
+              </div>
+            </div>
+          </div>
+
+          {/* Legend 3-box Grid Skeleton */}
+          <div className="grid grid-cols-3 gap-1 pt-2 border-t border-slate-200 text-center">
+            {[1, 2, 3].map((item) => (
+              <div key={item} className="p-1.5 bg-slate-50 rounded space-y-1">
+                <div className="h-2 w-10 bg-slate-200 rounded animate-pulse mx-auto" />
+                <div className="h-3 w-6 bg-slate-300 rounded animate-pulse mx-auto" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Operational Tenders Registry Table Skeleton */}
+      <div className="portal-card overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-4 py-3 bg-slate-50 border-b border-slate-200">
+          <div className="space-y-1">
+            <div className="h-3.5 w-44 bg-slate-200 rounded animate-pulse" />
+            <div className="h-2.5 w-56 bg-slate-100 rounded animate-pulse" />
+          </div>
+          <div className="h-7 w-40 bg-slate-200 rounded animate-pulse" />
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="portal-table">
+            <thead>
+              <tr>
+                <th className="w-2/5">Tender Specification</th>
+                <th>Procuring Authority</th>
+                <th className="w-28">Est. Value</th>
+                <th className="w-32">Risk Index</th>
+                <th className="w-24">Status</th>
+                <th className="w-24 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[1, 2, 3, 4, 5].map((row) => (
+                <tr key={row}>
+                  <td>
+                    <div className="space-y-1.5 py-0.5">
+                      <div className="h-3.5 w-4/5 bg-slate-200 rounded animate-pulse" />
+                      <div className="h-2.5 w-1/3 bg-slate-100 rounded animate-pulse" />
+                    </div>
+                  </td>
+                  <td>
+                    <div className="h-3 w-32 bg-slate-200 rounded animate-pulse" />
+                  </td>
+                  <td>
+                    <div className="h-3.5 w-16 bg-slate-200 rounded animate-pulse" />
+                  </td>
+                  <td>
+                    <div className="h-3.5 w-24 bg-slate-100 rounded-full animate-pulse" />
+                  </td>
+                  <td>
+                    <div className="h-5 w-16 bg-slate-200 rounded-full animate-pulse" />
+                  </td>
+                  <td className="text-right">
+                    <div className="h-3.5 w-12 bg-slate-200 rounded animate-pulse ml-auto" />
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

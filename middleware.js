@@ -12,18 +12,28 @@ export function middleware(request) {
     pathname.startsWith('/tenders') ||
     pathname.startsWith('/analytics');
 
+  // Auth page paths (login/register)
+  const isAuthRoute =
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/register');
+
   const token = request.cookies.get('token')?.value;
 
-  // In development/prototype mode, permit client-side auth state to manage access
-  // while checking cookie if present
+  // Redirect unauthenticated users away from protected routes
   if (isProtectedRoute && !token) {
-    // If testing via client local storage, let the page load so AuthProvider can hydrate
-    return NextResponse.next();
+    const loginUrl = new URL('/login', request.url);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  // Redirect authenticated users away from auth pages to dashboard
+  if (isAuthRoute && token) {
+    const dashboardUrl = new URL('/dashboard', request.url);
+    return NextResponse.redirect(dashboardUrl);
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/tenders/:path*', '/analytics/:path*'],
+  matcher: ['/dashboard/:path*', '/tenders/:path*', '/analytics/:path*', '/login', '/register'],
 };

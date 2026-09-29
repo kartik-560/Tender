@@ -24,6 +24,10 @@ export default function TendersListPage() {
     fetchTenders();
   }, []);
 
+  if (isLoadingTenders && (!tenders || tenders.length === 0)) {
+    return <TendersTableSkeleton />;
+  }
+
   const filteredTenders = (tenders && tenders.length > 0 ? tenders : []).filter((t) => {
     const matchesSearch =
       t.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -171,6 +175,96 @@ export default function TendersListPage() {
         <div className="px-4 py-2.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-600 font-mono">
           <span>Showing {filteredTenders.length} solicitations</span>
           <span>Security Protocol: FAR Section 5.2</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Table-specific skeleton loader for the Active Solicitations Registry.
+ * Replicates the exact 7-column operational table, filter bar, and pagination/footer.
+ */
+function TendersTableSkeleton() {
+  return (
+    <div className="space-y-6" aria-busy="true" aria-label="Loading tenders registry">
+      {/* Official Header Skeleton */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+        <div className="space-y-1.5">
+          <div className="h-3 w-48 bg-slate-200 rounded animate-pulse" />
+          <div className="flex items-center gap-2">
+            <div className="h-6 w-96 max-w-full bg-slate-300 rounded animate-pulse" />
+            <div className="h-5 w-20 bg-slate-100 border border-slate-200 rounded animate-pulse" />
+          </div>
+          <div className="h-3.5 w-120 max-w-full bg-slate-100 rounded animate-pulse" />
+        </div>
+
+        <div className="h-8 w-44 bg-slate-200 rounded animate-pulse shrink-0" />
+      </div>
+
+      {/* Filter and Search Bar Skeleton */}
+      <div className="portal-card p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-slate-50/70">
+        <div className="h-8 w-full sm:w-80 bg-white border border-slate-200 rounded animate-pulse" />
+        <div className="flex items-center gap-1.5">
+          <div className="h-3 w-12 bg-slate-200 rounded animate-pulse mr-1" />
+          {['ALL', 'Active', 'In Review', 'Won', 'Lost'].map((st) => (
+            <div key={st} className="h-6 w-14 bg-white border border-slate-200 rounded animate-pulse" />
+          ))}
+        </div>
+      </div>
+
+      {/* High-Density Operational Table Skeleton */}
+      <div className="portal-card overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="portal-table">
+            <thead>
+              <tr>
+                <th className="w-20">ID</th>
+                <th className="w-2/5">Tender Specification Title</th>
+                <th>Procuring Authority</th>
+                <th className="w-28">Est. Value</th>
+                <th className="w-32">Risk Index</th>
+                <th className="w-24">Status</th>
+                <th className="w-24 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((row) => (
+                <tr key={row}>
+                  <td>
+                    <div className="h-3.5 w-12 bg-slate-200 rounded font-mono animate-pulse" />
+                  </td>
+                  <td>
+                    <div className="space-y-1.5 py-0.5">
+                      <div className="h-3.5 w-4/5 bg-slate-200 rounded animate-pulse" />
+                      <div className="h-2.5 w-3/5 bg-slate-100 rounded animate-pulse" />
+                    </div>
+                  </td>
+                  <td>
+                    <div className="h-3 w-32 bg-slate-200 rounded animate-pulse" />
+                  </td>
+                  <td>
+                    <div className="h-3.5 w-16 bg-slate-200 rounded font-mono animate-pulse" />
+                  </td>
+                  <td>
+                    <div className="h-3.5 w-24 bg-slate-100 rounded-full animate-pulse" />
+                  </td>
+                  <td>
+                    <div className="h-5 w-16 bg-slate-200 rounded-full animate-pulse" />
+                  </td>
+                  <td className="text-right">
+                    <div className="h-3.5 w-12 bg-slate-200 rounded animate-pulse ml-auto" />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Table Footer Skeleton */}
+        <div className="px-4 py-2.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs">
+          <div className="h-3 w-36 bg-slate-200 rounded animate-pulse" />
+          <div className="h-3 w-48 bg-slate-200 rounded animate-pulse" />
         </div>
       </div>
     </div>

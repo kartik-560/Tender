@@ -1,14 +1,17 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { Calendar, Clock, CheckCircle2, User, ArrowLeft, LayoutDashboard, FileText, Check } from 'lucide-react';
+import { Calendar, Clock, CheckCircle2, User, ArrowLeft, LayoutDashboard, FileText, Check, AlertCircle } from 'lucide-react';
 import Button from '../../components/Button';
 import Badge from '../../components/Badge';
 import useTenderStore from '../../store/useTenderStore';
+import { useToast } from '../../providers/ToastProvider';
 
 export function Step5Deadlines() {
-  const { extractedTender, setCurrentStep, resetUploadFlow } = useTenderStore();
+  const { extractedTender, setCurrentStep, resetUploadFlow, confirmAndRegisterTender } = useTenderStore();
+  const { showToast } = useToast();
+  const [isRegistering, setIsRegistering] = useState(false);
 
   if (!extractedTender) {
     return (
@@ -43,7 +46,20 @@ export function Step5Deadlines() {
     );
   }
 
+  const isRegistered = extractedTender?.isRegistered === true || extractedTender?.tender?.status === 'Active';
   const deadlines = extractedTender?.rawAnalysis?.deadlines || [];
+
+  const handleRegister = async () => {
+    try {
+      setIsRegistering(true);
+      await confirmAndRegisterTender();
+      showToast('Tender officially registered in Active Procurement Registry.', 'success');
+    } catch (err) {
+      showToast(err.message || 'Failed to register tender in database', 'error');
+    } finally {
+      setIsRegistering(false);
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -63,21 +79,38 @@ export function Step5Deadlines() {
         </p>
       </div>
 
-      {/* Confirmation Dossier Banner */}
-      <div className="p-4 bg-emerald-50 border border-emerald-300 rounded flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <CheckCircle2 className="w-5 h-5 text-emerald-700 shrink-0" />
-          <div>
-            <h4 className="text-xs font-bold text-emerald-900 uppercase tracking-wider">
-              Ingestion Dossier Successfully Verified & Indexed
-            </h4>
-            <p className="text-xs text-emerald-800 mt-0.5">
-              All 5 phases of extraction are complete. Record is now cataloged in the Active Procurement Registry.
-            </p>
+      {/* Confirmation / Pending Status Banner */}
+      {isRegistered ? (
+        <div className="p-4 bg-emerald-50 border border-emerald-300 rounded flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <CheckCircle2 className="w-5 h-5 text-emerald-700 shrink-0" />
+            <div>
+              <h4 className="text-xs font-bold text-emerald-900 uppercase tracking-wider">
+                Ingestion Dossier Successfully Verified & Cataloged
+              </h4>
+              <p className="text-xs text-emerald-800 mt-0.5">
+                All 5 phases of extraction and milestone assignments are officially committed to the Active Procurement Registry.
+              </p>
+            </div>
           </div>
+          <Badge variant="success">OFFICIALLY REGISTERED</Badge>
         </div>
-        <Badge variant="success">ARCHIVED IN SYSTEM</Badge>
-      </div>
+      ) : (
+        <div className="p-4 bg-amber-50 border border-amber-300 rounded flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <AlertCircle className="w-5 h-5 text-amber-700 shrink-0" />
+            <div>
+              <h4 className="text-xs font-bold text-amber-900 uppercase tracking-wider">
+                Pending Official Registration
+              </h4>
+              <p className="text-xs text-amber-800 mt-0.5">
+                All 5 ingestion phases reviewed. Click &quot;Complete Ingestion &amp; Register Tender&quot; below to record this solicitation into the database.
+              </p>
+            </div>
+          </div>
+          <Badge variant="warning">PENDING CONFIRMATION</Badge>
+        </div>
+      )}
 
       {/* Milestones Data Table */}
       <div className="portal-card overflow-hidden">
@@ -146,27 +179,61 @@ export function Step5Deadlines() {
 
       {/* Final Action Bar */}
       <div className="p-4 bg-white border border-slate-200 rounded flex flex-col sm:flex-row items-center justify-between gap-4">
-        <Button variant="secondary" onClick={() => setCurrentStep(4)} icon={ArrowLeft}>
-          Back to Parameters
-        </Button>
-
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={resetUploadFlow}
-            className="text-xs px-3 py-1.5 rounded border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium transition-colors"
-          >
-            Ingest Another Tender
-          </button>
-          <Link href="/dashboard">
-            <Button size="md" variant="action" icon={LayoutDashboard}>
-              Return to Executive Dashboard
+        {!isRegistered ? (
+          <>
+            <Button variant="secondary" onClick={() => setCurrentStep(4)} icon={ArrowLeft}>
+              Back to Parameters
             </Button>
-          </Link>
-        </div>
+
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={resetUploadFlow}
+                className="text-xs px-3 py-1.5 rounded border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium transition-colors"
+              >
+                Discard Dossier
+              </button>
+              <Button
+                size="md"
+                variant="action"
+                isLoading={isRegistering}
+                onClick={handleRegister}
+                icon={CheckCircle2}
+                className="bg-emerald-700 hover:bg-emerald-800 text-white border-emerald-800"
+              >
+                {isRegistering ? 'Registering Tender...' : 'Complete Ingestion & Register Tender'}
+              </Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={resetUploadFlow}
+              icon={ArrowLeft}
+            >
+              Ingest Another Tender
+            </Button>
+
+            <div className="flex items-center gap-2">
+              <Link href="/tenders">
+                <Button size="md" variant="secondary" icon={FileText}>
+                  View in Tender Registry
+                </Button>
+              </Link>
+              <Link href="/dashboard">
+                <Button size="md" variant="action" icon={LayoutDashboard}>
+                  Return to Executive Dashboard
+                </Button>
+              </Link>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
 }
 
 export default Step5Deadlines;
+

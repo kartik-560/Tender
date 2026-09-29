@@ -24,7 +24,7 @@ export default function Home() {
             <Link href="/login" className="text-xs font-semibold text-slate-700 hover:text-slate-900 transition-colors">
               Official Sign In
             </Link>
-            <Link href="/dashboard">
+            <Link href="/login">
               <Button size="sm" variant="primary">
                 Launch Portal
               </Button>
@@ -51,14 +51,9 @@ export default function Home() {
           </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
-            <Link href="/dashboard">
-              <Button size="lg" variant="primary" icon={BarChart3}>
-                Open Executive Dashboard
-              </Button>
-            </Link>
-            <Link href="/tenders/upload">
-              <Button size="lg" variant="secondary" icon={FileUp}>
-                Execute 5-Step Ingestion Flow
+            <Link href="/login">
+              <Button size="lg" variant="primary" icon={ArrowRight}>
+                Launch Portal
               </Button>
             </Link>
           </div>
