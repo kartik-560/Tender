@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function Button({
+export default function Button({
   children,
   variant = 'primary',
   size = 'md',
@@ -49,5 +49,3 @@ export function Button({
     </button>
   );
 }
-
-export default Button;

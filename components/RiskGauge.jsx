@@ -1,7 +1,7 @@
 import React from 'react';
 import { ShieldAlert, ShieldCheck, AlertTriangle } from 'lucide-react';
 
-export function RiskGauge({ score = 3.8, showLabel = true, size = 'md' }) {
+export default function RiskGauge({ score = 3.8, showLabel = true, size = 'md' }) {
   const numScore = typeof score === 'number' ? score : parseFloat(score) || 3.8;
 
   let colorClass = 'text-emerald-800 border-emerald-300 bg-emerald-50';
@@ -52,5 +52,3 @@ export function RiskGauge({ score = 3.8, showLabel = true, size = 'md' }) {
     </div>
   );
 }
-
-export default RiskGauge;

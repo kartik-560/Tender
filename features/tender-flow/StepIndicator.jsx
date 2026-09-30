@@ -9,7 +9,7 @@ const steps = [
   { id: 5, name: 'Milestone Schedule & Actions', short: 'Timeline & Tasks' },
 ];
 
-export function StepIndicator({ currentStep, onSelectStep }) {
+export default function StepIndicator({ currentStep, onSelectStep }) {
   return (
     <div className="w-full">
       <nav aria-label="Progress">
@@ -75,5 +75,3 @@ export function StepIndicator({ currentStep, onSelectStep }) {
     </div>
   );
 }
-
-export default StepIndicator;

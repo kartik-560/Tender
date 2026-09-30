@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowUpRight, ArrowDownRight } from 'lucide-react';
 
-export function StatCard({
+export default function StatCard({
   title,
   value,
   subtitle,
@@ -45,5 +45,3 @@ export function StatCard({
     </div>
   );
 }
-
-export default StatCard;

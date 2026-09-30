@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function Badge({ children, variant = 'default', className = '' }) {
+export default function Badge({ children, variant = 'default', className = '' }) {
   const styles = {
     default: 'bg-slate-100 text-slate-700 border-slate-200',
     primary: 'bg-blue-50 text-blue-800 border-blue-200',
@@ -20,5 +20,3 @@ export function Badge({ children, variant = 'default', className = '' }) {
     </span>
   );
 }
-
-export default Badge;

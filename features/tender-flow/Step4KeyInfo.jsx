@@ -7,7 +7,7 @@ import RiskGauge from '../../components/RiskGauge';
 import Badge from '../../components/Badge';
 import useTenderStore from '../../store/useTenderStore';
 
-export function Step4KeyInfo() {
+export default function Step4KeyInfo() {
   const { extractedTender, setCurrentStep } = useTenderStore();
 
   if (!extractedTender) {
@@ -175,5 +175,3 @@ export function Step4KeyInfo() {
     </div>
   );
 }
-
-export default Step4KeyInfo;

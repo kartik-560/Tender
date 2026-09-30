@@ -23,13 +23,13 @@ export default function ProtectedLayout({ children }) {
 
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-900 flex">
-      {/* Fixed Left Institutional Sidebar */}
+      {/* Institutional Sidebar (Drawer on mobile/tab, docked on desktop lg+) */}
       <Sidebar />
 
-      {/* Main Content Area */}
-      <div className="flex-1 ml-60 flex flex-col min-h-screen overflow-x-hidden">
+      {/* Main Content Area: full width on mobile/tab (ml-0), offset on desktop (lg:ml-60) */}
+      <div className="flex-1 ml-0 lg:ml-60 flex flex-col min-h-screen min-w-0 overflow-x-hidden">
         <Navbar />
-        <main className="flex-1 p-6 max-w-7xl w-full mx-auto space-y-6">
+        <main className="flex-1 p-3.5 sm:p-5 md:p-6 max-w-7xl w-full mx-auto space-y-6">
           {children}
         </main>
       </div>
@@ -44,8 +44,8 @@ export default function ProtectedLayout({ children }) {
 function AuthShellSkeleton() {
   return (
     <div className="min-h-screen bg-[#f8fafc] flex" aria-busy="true" aria-label="Loading workspace">
-      {/* Shell Sidebar Skeleton (matching 60px/15rem width and dark institutional palette) */}
-      <aside className="fixed left-0 top-0 z-50 flex h-screen w-60 flex-col border-r border-[#152e4a] bg-[#0a1a2f] select-none">
+      {/* Shell Sidebar Skeleton (hidden on mobile/tab, visible on desktop lg+) */}
+      <aside className="fixed left-0 top-0 z-50 hidden lg:flex h-screen w-60 flex-col border-r border-[#152e4a] bg-[#0a1a2f] select-none">
         {/* Sidebar Brand Header */}
         <div className="flex h-14 items-center gap-3 px-4 border-b border-[#152e4a] bg-[#071322]">
           <div className="h-8 w-8 rounded bg-[#163859] animate-pulse shrink-0" />
@@ -88,26 +88,26 @@ function AuthShellSkeleton() {
       </aside>
 
       {/* Main Content Shell Skeleton */}
-      <div className="flex-1 ml-60 flex flex-col min-h-screen overflow-x-hidden">
+      <div className="flex-1 ml-0 lg:ml-60 flex flex-col min-h-screen overflow-x-hidden">
         {/* Top Navbar Skeleton */}
         <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white shadow-xs">
-          <div className="flex h-14 items-center justify-between px-6">
-            <div className="h-8 w-80 bg-slate-100 rounded animate-pulse" />
+          <div className="flex h-14 items-center justify-between px-3 sm:px-6">
+            <div className="h-8 w-48 sm:w-80 bg-slate-100 rounded animate-pulse" />
             <div className="hidden md:flex h-6 w-60 bg-slate-100 rounded animate-pulse" />
             <div className="flex items-center gap-3">
-              <div className="h-8 w-32 bg-slate-200 rounded animate-pulse" />
+              <div className="h-8 w-20 sm:w-32 bg-slate-200 rounded animate-pulse" />
               <div className="w-8 h-8 rounded bg-slate-200 animate-pulse" />
             </div>
           </div>
         </header>
 
         {/* Page Content Placeholder Skeleton */}
-        <main className="flex-1 p-6 max-w-7xl w-full mx-auto space-y-6">
+        <main className="flex-1 p-3.5 sm:p-5 md:p-6 max-w-7xl w-full mx-auto space-y-6">
           {/* Header Skeleton */}
           <div className="pb-4 border-b border-slate-200 space-y-2">
             <div className="h-3 w-44 bg-slate-200 rounded animate-pulse" />
             <div className="h-6 w-80 bg-slate-300 rounded animate-pulse" />
-            <div className="h-3.5 w-96 bg-slate-100 rounded animate-pulse" />
+            <div className="h-3.5 w-96 max-w-full bg-slate-100 rounded animate-pulse" />
           </div>
 
           {/* 4 Stat Cards Skeleton */}

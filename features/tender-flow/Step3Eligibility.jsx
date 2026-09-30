@@ -6,7 +6,7 @@ import Button from '../../components/Button';
 import Badge from '../../components/Badge';
 import useTenderStore from '../../store/useTenderStore';
 
-export function Step3Eligibility() {
+export default function Step3Eligibility() {
   const { extractedTender, setCurrentStep } = useTenderStore();
   const [filter, setFilter] = useState('ALL');
 
@@ -198,5 +198,3 @@ export function Step3Eligibility() {
     </div>
   );
 }
-
-export default Step3Eligibility;

@@ -8,7 +8,7 @@ import Badge from '../../components/Badge';
 import useTenderStore from '../../store/useTenderStore';
 import { useToast } from '../../providers/ToastProvider';
 
-export function Step5Deadlines() {
+export default function Step5Deadlines() {
   const { extractedTender, setCurrentStep, resetUploadFlow, confirmAndRegisterTender } = useTenderStore();
   const { showToast } = useToast();
   const [isRegistering, setIsRegistering] = useState(false);
@@ -234,6 +234,4 @@ export function Step5Deadlines() {
     </div>
   );
 }
-
-export default Step5Deadlines;
 

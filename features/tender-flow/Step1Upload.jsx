@@ -6,7 +6,7 @@ import Button from '../../components/Button';
 import useTenderStore from '../../store/useTenderStore';
 import { useToast } from '../../providers/ToastProvider';
 
-export function Step1Upload() {
+export default function Step1Upload() {
   const [isDragOver, setIsDragOver] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
@@ -184,5 +184,3 @@ export function Step1Upload() {
     </div>
   );
 }
-
-export default Step1Upload;

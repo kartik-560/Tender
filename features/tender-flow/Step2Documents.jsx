@@ -5,7 +5,7 @@ import { FileText, ExternalLink, ArrowRight, ArrowLeft, Shield, Building, HardDr
 import Button from '../../components/Button';
 import useTenderStore from '../../store/useTenderStore';
 
-export function Step2Documents() {
+export default function Step2Documents() {
   const { extractedTender, setCurrentStep } = useTenderStore();
 
   const tender = extractedTender?.tender;
@@ -150,5 +150,3 @@ export function Step2Documents() {
     </div>
   );
 }
-
-export default Step2Documents;

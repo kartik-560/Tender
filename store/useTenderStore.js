@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import api from '../shared/api';
 
-export const useTenderStore = create((set, get) => ({
+const useTenderStore = create((set, get) => ({
   tenders: [],
   isLoadingTenders: false,
   tendersError: null,
@@ -102,15 +102,6 @@ export const useTenderStore = create((set, get) => ({
     } catch (err) {
       set({ tendersError: err.message, isLoadingTenders: false });
     }
-  },
-
-  // Derived properties helper
-  getRecentTenders: () => {
-    return get().tenders.slice(0, 5);
-  },
-
-  getHighRiskTenders: () => {
-    return get().tenders.filter(t => t.riskScore >= 3.8);
   },
 }));
 

@@ -1,23 +1,16 @@
 'use client';
 
-import React, { createContext, useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import useAuthStore from '../store/useAuthStore';
 
-const AuthContext = createContext(null);
-
 export function AuthProvider({ children }) {
-  const auth = useAuthStore();
+  const initialize = useAuthStore((state) => state.initialize);
 
   useEffect(() => {
-    auth.initialize();
-  }, []);
+    initialize();
+  }, [initialize]);
 
-  return (
-    <AuthContext.Provider value={auth}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return children;
 }
 
-export const useAuth = () => useContext(AuthContext);
 export default AuthProvider;
