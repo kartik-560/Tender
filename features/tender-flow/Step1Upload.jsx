@@ -64,7 +64,7 @@ export default function Step1Upload() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       {/* Section Header */}
-      <div className="border-b border-slate-200 pb-4">
+      {/* <div className="border-b border-slate-200 pb-4">
         <div className="flex items-center gap-2 mb-1">
           <span className="text-[11px] font-mono font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200 uppercase">
             Phase 1 of 5
@@ -77,7 +77,7 @@ export default function Step1Upload() {
         <p className="mt-1 text-xs text-slate-600 leading-relaxed">
           Upload any official tender, RFP, or solicitation specification in PDF format. The system automatically segments clauses, evaluates mandatory eligibility conditions, calculates penalty risks, and maps submission timelines.
         </p>
-      </div>
+      </div> */}
 
       {/* Upload Box */}
       <div
